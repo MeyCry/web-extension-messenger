@@ -1,0 +1,23 @@
+{
+  "name": "web-extension-messenger",
+  "version": "1.0.0",
+  "description": "A small wrapper of the Browser API for organizing communication between background and content js scripts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MeyCry/web-extension-messenger.git"
+  },
+  "keywords": [
+    "WebExtension",
+    "BrowserExtension"
+  ],
+  "author": "MeyCry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MeyCry/web-extension-messenger/issues"
+  },
+  "homepage": "https://github.com/MeyCry/web-extension-messenger#readme"
+}
