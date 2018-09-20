@@ -20,7 +20,7 @@ export default class SafariMessenger {
 
         self.callbacks.forEach(callback => {
           if (window.safari.application) { // background
-            let tab = e.target;
+            let tab = event.target;
 
             if (tab.toString() === '[object SafariBrowserWindow]') {
               tab = tab.activeTab;

@@ -4,8 +4,8 @@ console.log("run background");
 
 const messenger = new Messenger();
 
-function callback(message) {
-  console.log("message from some tab", message);
+function callback(message, tab) {
+  console.log("message from some tab", message, tab);
 
   if (message.messageId) { // send response
     messenger.sendMessage({

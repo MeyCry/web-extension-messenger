@@ -218,7 +218,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ChromeMessenger; });
 class ChromeMessenger {
   constructor() {
-    chrome.runtime.onMessage.addListener(message => {
+    chrome.runtime.onMessage.addListener((message, sender) => {
       const messageId = message.messageId;
 
       // Attach callback id and invoke function
@@ -228,7 +228,11 @@ class ChromeMessenger {
       }
 
       this.callbacks.forEach(callback => {
-        callback(message);
+        if (chrome.tabs) { // background
+          callback(message, sender.tab);
+        } else { // client
+          callback(message);
+        }
       });
     });
   }
@@ -265,7 +269,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 class NormalExtensionsMessenger {
   constructor() {
-    browser.runtime.onMessage.addListener(message => {
+    browser.runtime.onMessage.addListener((message, sender) => {
       const messageId = message.messageId;
 
       // Attach callback id and invoke function
@@ -275,7 +279,11 @@ class NormalExtensionsMessenger {
       }
 
       this.callbacks.forEach(callback => {
-        callback(message);
+        if (browser.tabs) { // background
+          callback(message, sender.tab);
+        } else { // client
+          callback(message);
+        }
       });
     });
   }
@@ -326,7 +334,16 @@ class SafariMessenger {
         }
 
         self.callbacks.forEach(callback => {
-          callback(message);
+          if (window.safari.application) { // background
+            let tab = event.target;
+
+            if (tab.toString() === '[object SafariBrowserWindow]') {
+              tab = tab.activeTab;
+            }
+            callback(message, tab);
+          } else { // client
+            callback(message);
+          }
         });
       },
       false);
