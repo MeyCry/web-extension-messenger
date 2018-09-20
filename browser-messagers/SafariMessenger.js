@@ -19,7 +19,16 @@ export default class SafariMessenger {
         }
 
         self.callbacks.forEach(callback => {
-          callback(message);
+          if (window.safari.application) { // background
+            let tab = e.target;
+
+            if (tab.toString() === '[object SafariBrowserWindow]') {
+              tab = tab.activeTab;
+            }
+            callback(message, tab);
+          } else { // client
+            callback(message);
+          }
         });
       },
       false);

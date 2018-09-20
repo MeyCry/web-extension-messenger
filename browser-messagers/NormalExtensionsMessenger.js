@@ -5,7 +5,7 @@
  */
 export default class NormalExtensionsMessenger {
   constructor() {
-    browser.runtime.onMessage.addListener(message => {
+    browser.runtime.onMessage.addListener((message, sender) => {
       const messageId = message.messageId;
 
       // Attach callback id and invoke function
@@ -15,7 +15,11 @@ export default class NormalExtensionsMessenger {
       }
 
       this.callbacks.forEach(callback => {
-        callback(message);
+        if (browser.tabs) { // background
+          callback(message, sender.tab);
+        } else { // client
+          callback(message);
+        }
       });
     });
   }
