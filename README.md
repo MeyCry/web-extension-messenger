@@ -9,7 +9,7 @@ client.js
 
 ```$xslt
 
-import Messenger from "../index";
+import Messenger from "web-extension-messenger";
 
 setTimeout(function () {
   const messenger = new Messenger();
@@ -42,7 +42,7 @@ background.js
 
 ```$xslt
 
-import Messenger from "../index";
+import Messenger from "web-extension-messenger";
 
 const messenger = new Messenger();
 
