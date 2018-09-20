@@ -1,6 +1,6 @@
 {
   "name": "web-extension-messenger",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A small wrapper of the Browser API for organizing communication between background and content js scripts",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "WebExtension",
     "BrowserExtension"
   ],
-  "author": "MeyCry",
+  "author": "meycry <timchukvadim@gmail.com> (https://github.com/MeyCry)",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/MeyCry/web-extension-messenger/issues"
