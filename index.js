@@ -19,8 +19,7 @@ if (chrome) {
  * @typedef {Object} Implementations
  * @property {object} chrome - Chrome implementations
  * @property {object} safari - Safari implementations
- * @property {object} firefox - Firefox implementations
- * @property {object} edge - Edge implementations
+ * @property {object} firefoxOrEdge - Firefox and Edge implementations
  */
 const Implementations = {
   chrome: ChromeMessenger,
@@ -29,7 +28,7 @@ const Implementations = {
   "": class NoClass {}
 }[browserType];
 
-export default class Messenger extends Implementations{
+export default class Messenger extends Implementations {
   constructor() {
     super();
     this.callbacks = [];
@@ -56,7 +55,7 @@ export default class Messenger extends Implementations{
 
   /**
    * send message to other messengers
-   * @param message
+   * @param {object} message
    */
   sendMessage(message) {
     super.sendMessage(message);
@@ -65,7 +64,7 @@ export default class Messenger extends Implementations{
   /**
    *
    * @param {object} message to send
-   * @return {promise} with response
+   * @return {Promise} with response
    */
   sendMessageAndGetResponse(message) {
     if (!message.messageId) {
