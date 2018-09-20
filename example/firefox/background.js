@@ -93,6 +93,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
 
+console.log("run background");
+
 const messenger = new _index__WEBPACK_IMPORTED_MODULE_0__["default"]();
 
 function callback(message) {
@@ -116,6 +118,8 @@ setTimeout(function () {
   });
 }, 2000);
 
+window.messenger = messenger; // for test with dev console
+
 /***/ }),
 /* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -131,6 +135,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+var chrome = window.chrome || false;
+var safari = window.safari || false;
+var browser = window.browser || false;
 
 var browserType = "";
 if (chrome) {
@@ -248,14 +256,15 @@ class ChromeMessenger {
     chrome.runtime.onMessage.addListener(message => {
       const messageId = message.messageId;
 
-      this.callbacks.forEach(callback => {
-        callback(message);
-      });
       // Attach callback id and invoke function
       if (messageId && this.responses[messageId]) {
         this.responses[messageId](message);
         delete this.responses[messageId];
       }
+
+      this.callbacks.forEach(callback => {
+        callback(message);
+      });
     });
   }
 
@@ -294,14 +303,15 @@ class NormalExtensionsMessenger {
     browser.runtime.onMessage.addListener(message => {
       const messageId = message.messageId;
 
-      this.callbacks.forEach(callback => {
-        callback(message);
-      });
       // Attach callback id and invoke function
       if (messageId && this.responses[messageId]) {
         this.responses[messageId](message);
         delete this.responses[messageId];
       }
+
+      this.callbacks.forEach(callback => {
+        callback(message);
+      });
     });
   }
 
@@ -332,28 +342,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SafariMessenger; });
 class SafariMessenger {
   constructor() {
-    var addEventListener = function () {};
     var ctx = {};
-    if (safari.self) { // client
-      addEventListener = safari.self.addEventListener;
-      ctx = safari.self;
-    } else {
-      addEventListener = safari.application.addEventListener;
-      ctx = safari.application;
+    if (window.safari.application) { // background
+      ctx = window.safari.application;
+    } else { // client
+      ctx = window.safari.self;
     }
 
-    addEventListener.call(ctx ,'message', event => {
+    const self = this;
+    ctx.addEventListener('message', function (event) {
         const message = event.message;
         const messageId = message.messageId;
 
-        this.callbacks.forEach(callback => {
-          callback(message);
-        });s
         // Attach callback id and invoke function
-        if (messageId && this.responses[messageId]) {
-          this.responses[messageId](message);
-          delete this.responses[messageId];
+        if (messageId && self.responses[messageId]) {
+          self.responses[messageId](message);
+          delete self.responses[messageId];
         }
+
+        self.callbacks.forEach(callback => {
+          callback(message);
+        });
       },
       false);
   }
@@ -363,14 +372,16 @@ class SafariMessenger {
    * @returns {void}
    */
   sendMessage(message) {
-    if (safari.self) { // client
-      safari.self.tab.dispatchMessage('message', message);
-    } else { // background
-      safari.application.browserWindows.forEach(browserWindow => {
+    if (window.safari.application) { // background
+      window.safari.application.browserWindows.forEach(browserWindow => {
         browserWindow.tabs.forEach(tab => {
-          tab.page.dispatchMessage('message', message);
+          if (tab && tab.page && tab.page.dispatchMessage) {
+            tab.page.dispatchMessage('message', message);
+          }
         });
       });
+    } else { // client
+      window.safari.self.tab.dispatchMessage('message', message);
     }
   }
 

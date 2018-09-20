@@ -1,5 +1,7 @@
 import Messenger from "../index";
 
+console.log("run content");
+
 setTimeout(function () {
   const messenger = new Messenger();
 

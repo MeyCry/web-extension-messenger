@@ -1,26 +1,24 @@
 export default class SafariMessenger {
   constructor() {
-    var addEventListener = function () {};
     var ctx = {};
-    if (safari.self) { // client
-      addEventListener = safari.self.addEventListener;
-      ctx = safari.self;
-    } else {
-      addEventListener = safari.application.addEventListener;
-      ctx = safari.application;
+    if (window.safari.application) { // background
+      ctx = window.safari.application;
+    } else { // client
+      ctx = window.safari.self;
     }
 
-    addEventListener.call(ctx ,'message', event => {
+    const self = this;
+    ctx.addEventListener('message', function (event) {
         const message = event.message;
         const messageId = message.messageId;
 
         // Attach callback id and invoke function
-        if (messageId && this.responses[messageId]) {
-          this.responses[messageId](message);
-          delete this.responses[messageId];
+        if (messageId && self.responses[messageId]) {
+          self.responses[messageId](message);
+          delete self.responses[messageId];
         }
 
-        this.callbacks.forEach(callback => {
+        self.callbacks.forEach(callback => {
           callback(message);
         });
       },
@@ -32,14 +30,16 @@ export default class SafariMessenger {
    * @returns {void}
    */
   sendMessage(message) {
-    if (safari.self) { // client
-      safari.self.tab.dispatchMessage('message', message);
-    } else { // background
-      safari.application.browserWindows.forEach(browserWindow => {
+    if (window.safari.application) { // background
+      window.safari.application.browserWindows.forEach(browserWindow => {
         browserWindow.tabs.forEach(tab => {
-          tab.page.dispatchMessage('message', message);
+          if (tab && tab.page && tab.page.dispatchMessage) {
+            tab.page.dispatchMessage('message', message);
+          }
         });
       });
+    } else { // client
+      window.safari.self.tab.dispatchMessage('message', message);
     }
   }
 

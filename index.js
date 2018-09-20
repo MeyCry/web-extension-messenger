@@ -3,6 +3,10 @@ import ChromeMessenger from "./browser-messagers/ChromeMessenger";
 import NormalExtensionsMessenger from "./browser-messagers/NormalExtensionsMessenger";
 import SafariMessenger from "./browser-messagers/SafariMessenger";
 
+var chrome = window.chrome || false;
+var safari = window.safari || false;
+var browser = window.browser || false;
+
 var browserType = "";
 if (chrome) {
   browserType = "chrome";

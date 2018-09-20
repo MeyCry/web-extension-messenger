@@ -1,5 +1,7 @@
 import Messenger from "../index";
 
+console.log("run background");
+
 const messenger = new Messenger();
 
 function callback(message) {
@@ -22,3 +24,5 @@ setTimeout(function () {
     console.log("response from tabs", message);
   });
 }, 2000);
+
+window.messenger = messenger; // for test with dev console
