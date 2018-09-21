@@ -100,9 +100,9 @@ const messenger = new _index__WEBPACK_IMPORTED_MODULE_0__["default"]();
 function callback(message, tab) {
   console.log("message from some tab", message, tab);
 
-  if (message.messageId) { // send response
+  if (message.messId) { // send response
     messenger.sendMessage({
-      messageId: message.messageId,
+      messId: message.messId,
       yourMessage: message
     });
   }
@@ -119,14 +119,6 @@ setTimeout(function () {
 }, 2000);
 
 window.messenger = messenger; // for test with dev console
-
-safari.application.addEventListener("beforeNavigate", function (ev) {
-    console.log(ev.target);
-}, true);
-
-safari.application.addEventListener("navigate", function (ev) {
-    console.log(ev.target);
-}, true);
 
 /***/ }),
 /* 1 */
@@ -212,12 +204,12 @@ class Messenger extends Implementations {
    * @return {Promise} with response
    */
   sendMessageAndGetResponse(message) {
-    if (!message.messageId) {
-      message['messageId'] = Object(_guid__WEBPACK_IMPORTED_MODULE_0__["default"])();
+    if (!message.messId) {
+      message.messId = Object(_guid__WEBPACK_IMPORTED_MODULE_0__["default"])();
     }
 
     return new Promise((resolve, reject) => {
-      this.responses[message.messageId] = function (response) {
+      this.responses[message.messId] = function (response) {
         resolve(response);
       };
 
@@ -262,13 +254,7 @@ __webpack_require__.r(__webpack_exports__);
 class ChromeMessenger {
   constructor() {
     chrome.runtime.onMessage.addListener((message, sender) => {
-      const messageId = message.messageId;
-
-      // Attach callback id and invoke function
-      if (messageId && this.responses[messageId]) {
-        this.responses[messageId](message);
-        delete this.responses[messageId];
-      }
+      const messId = message.messId;
 
       this.callbacks.forEach(callback => {
         if (chrome.tabs) { // background
@@ -277,6 +263,11 @@ class ChromeMessenger {
           callback(message);
         }
       });
+      // Attach callback id and invoke function
+      if (messId && this.responses[messId]) {
+          this.responses[messId](message);
+          delete this.responses[messId];
+      }
     });
   }
 
@@ -313,13 +304,7 @@ __webpack_require__.r(__webpack_exports__);
 class NormalExtensionsMessenger {
   constructor() {
     browser.runtime.onMessage.addListener((message, sender) => {
-      const messageId = message.messageId;
-
-      // Attach callback id and invoke function
-      if (messageId && this.responses[messageId]) {
-        this.responses[messageId](message);
-        delete this.responses[messageId];
-      }
+      const messId = message.messId;
 
       this.callbacks.forEach(callback => {
         if (browser.tabs) { // background
@@ -328,6 +313,11 @@ class NormalExtensionsMessenger {
           callback(message);
         }
       });
+      // Attach callback id and invoke function
+      if (messId && this.responses[messId]) {
+          this.responses[messId](message);
+          delete this.responses[messId];
+      }
     });
   }
 
@@ -368,13 +358,7 @@ class SafariMessenger {
     const self = this;
     ctx.addEventListener('message', function (event) {
         const message = event.message;
-        const messageId = message.messageId;
-
-        // Attach callback id and invoke function
-        if (messageId && self.responses[messageId]) {
-          self.responses[messageId](message);
-          delete self.responses[messageId];
-        }
+        const messId = message.messId;
 
         self.callbacks.forEach(callback => {
           if (window.safari.application) { // background
@@ -388,6 +372,11 @@ class SafariMessenger {
             callback(message);
           }
         });
+        // Attach callback id and invoke function
+        if (messId && self.responses[messId]) {
+            self.responses[messId](message);
+            delete self.responses[messId];
+        }
       },
       false);
   }

@@ -10,7 +10,7 @@ export default class SafariMessenger {
     const self = this;
     ctx.addEventListener('message', function (event) {
         const message = event.message;
-        const messageId = message.messageId;
+        const messId = message.messId;
 
         self.callbacks.forEach(callback => {
           if (window.safari.application) { // background
@@ -25,9 +25,9 @@ export default class SafariMessenger {
           }
         });
         // Attach callback id and invoke function
-        if (messageId && self.responses[messageId]) {
-            self.responses[messageId](message);
-            delete self.responses[messageId];
+        if (messId && self.responses[messId]) {
+            self.responses[messId](message);
+            delete self.responses[messId];
         }
       },
       false);

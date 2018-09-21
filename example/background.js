@@ -7,9 +7,9 @@ const messenger = new Messenger();
 function callback(message, tab) {
   console.log("message from some tab", message, tab);
 
-  if (message.messageId) { // send response
+  if (message.messId) { // send response
     messenger.sendMessage({
-      messageId: message.messageId,
+      messId: message.messId,
       yourMessage: message
     });
   }

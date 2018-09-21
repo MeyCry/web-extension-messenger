@@ -6,7 +6,7 @@
 export default class NormalExtensionsMessenger {
   constructor() {
     browser.runtime.onMessage.addListener((message, sender) => {
-      const messageId = message.messageId;
+      const messId = message.messId;
 
       this.callbacks.forEach(callback => {
         if (browser.tabs) { // background
@@ -16,9 +16,9 @@ export default class NormalExtensionsMessenger {
         }
       });
       // Attach callback id and invoke function
-      if (messageId && this.responses[messageId]) {
-          this.responses[messageId](message);
-          delete this.responses[messageId];
+      if (messId && this.responses[messId]) {
+          this.responses[messId](message);
+          delete this.responses[messId];
       }
     });
   }
