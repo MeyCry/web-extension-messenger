@@ -12,12 +12,6 @@ export default class SafariMessenger {
         const message = event.message;
         const messageId = message.messageId;
 
-        // Attach callback id and invoke function
-        if (messageId && self.responses[messageId]) {
-          self.responses[messageId](message);
-          delete self.responses[messageId];
-        }
-
         self.callbacks.forEach(callback => {
           if (window.safari.application) { // background
             let tab = event.target;
@@ -30,6 +24,11 @@ export default class SafariMessenger {
             callback(message);
           }
         });
+        // Attach callback id and invoke function
+        if (messageId && self.responses[messageId]) {
+            self.responses[messageId](message);
+            delete self.responses[messageId];
+        }
       },
       false);
   }

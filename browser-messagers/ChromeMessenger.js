@@ -3,12 +3,6 @@ export default class ChromeMessenger {
     chrome.runtime.onMessage.addListener((message, sender) => {
       const messageId = message.messageId;
 
-      // Attach callback id and invoke function
-      if (messageId && this.responses[messageId]) {
-        this.responses[messageId](message);
-        delete this.responses[messageId];
-      }
-
       this.callbacks.forEach(callback => {
         if (chrome.tabs) { // background
           callback(message, sender.tab);
@@ -16,6 +10,11 @@ export default class ChromeMessenger {
           callback(message);
         }
       });
+      // Attach callback id and invoke function
+      if (messageId && this.responses[messageId]) {
+          this.responses[messageId](message);
+          delete this.responses[messageId];
+      }
     });
   }
 
