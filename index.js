@@ -40,6 +40,17 @@ export default class Messenger extends Implementations {
   }
 
   /**
+   * Send message to active tab
+   * @param {object}
+   * @return {void}
+   */
+  sendMessageToActiveTab(message) {
+    console.log('send to active');
+    super.sendMessageToActiveTab(message);
+  }
+
+
+  /**
    * Push callback in array of callbacks
    * @param {function} callback
    * @return {void}

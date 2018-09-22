@@ -3,6 +3,11 @@ export default class ChromeMessenger {
     chrome.runtime.onMessage.addListener((message, sender) => {
       const messId = message.messId;
 
+      if (message.type === 'function') {
+        // run some function
+        console.log(message.content.function);
+      }
+
       this.callbacks.forEach(callback => {
         if (chrome.tabs) { // background
           callback(message, sender.tab);
@@ -15,6 +20,17 @@ export default class ChromeMessenger {
           this.responses[messId](message);
           delete this.responses[messId];
       }
+    });
+  }
+
+  /**
+   * Find active tab and send message to it
+   * @param {object} message 
+   */
+  sendMessageToActiveTab(message) {
+    chrome.tabs.query({active: true}, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, message, (response) => {
+      });
     });
   }
 

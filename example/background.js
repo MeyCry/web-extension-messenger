@@ -15,6 +15,11 @@ function callback(message, tab) {
   }
 }
 
+messenger.sendMessageToActiveTab({type: "function", content: {
+    function: "SomeFuncToClient" 
+  }
+});
+
 messenger.onMessage(callback);
 
 setTimeout(function () {
