@@ -49,6 +49,19 @@ export default class Messenger extends Implementations {
     super.sendMessageToTab(tab, message);
   }
 
+  sendMesssageToTabAndGetResponse(tab, message) {
+      if (!message.messId) {
+          message.messId = guid();
+      }
+
+      return new Promise((resolve, reject) => {
+          this.responses[message.messId] = function (response) {
+              resolve(response);
+          };
+
+          this.sendMessageToTab(tab, message);
+      });
+  }
 
   /**
    * Push callback in array of callbacks
