@@ -39,4 +39,14 @@ export default class NormalExtensionsMessenger {
       browser.runtime.sendMessage(message);
     }
   }
+
+  /**
+   * Find active tab and send message to it
+   * @param {object} tab
+   * @param {object} message 
+   * @returns {void}
+   */
+  sendMessageToTab(tab, message) {
+    chrome.tabs.sendMessage(tab.id, message);
+  }
 }

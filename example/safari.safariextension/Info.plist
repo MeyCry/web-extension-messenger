@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>Builder Version</key>
-	<string>13605.1.33.1.4</string>
+	<string>13606.2.11</string>
 	<key>CFBundleDisplayName</key>
 	<string>safari example</string>
 	<key>CFBundleIdentifier</key>
@@ -35,6 +35,8 @@
 	<dict>
 		<key>Website Access</key>
 		<dict>
+			<key>Include Secure Pages</key>
+			<true/>
 			<key>Level</key>
 			<string>All</string>
 		</dict>
