@@ -108,10 +108,7 @@ function callback(message, tab) {
   }
 }
 
-messenger.sendMessageToActiveTab({type: "function", content: {
-    function: "SomeFuncToClient" 
-  }
-});
+// messenger.sendMessageToTab(tab, message);
 
 messenger.onMessage(callback);
 
@@ -177,10 +174,13 @@ class Messenger extends Implementations {
     this.responses = {};
   }
 
-
-  sendMessageToActiveTab(message) {
-    console.log('send to active');
-    super.sendMessageToActiveTab(message);
+  /**
+   * Send message to active tab
+   * @param {object}
+   * @return {void}
+   */
+  sendMessageToTab(tab, message) {
+    super.sendMessageToTab(tab, message);
   }
 
 
@@ -268,11 +268,6 @@ class ChromeMessenger {
     chrome.runtime.onMessage.addListener((message, sender) => {
       const messId = message.messId;
 
-      if (message.type === 'function') {
-        // run some function
-        console.log(message.content.function);
-      }
-
       this.callbacks.forEach(callback => {
         if (chrome.tabs) { // background
           callback(message, sender.tab);
@@ -289,19 +284,18 @@ class ChromeMessenger {
   }
 
   /**
+   * Find active tab and send message to it
+   * @param {object} message 
+   */
+  sendMessageToTab(tab, message) {
+    chrome.tabs.sendMessage(tab.id, message)
+  }
+
+  /**
    * Send to all tabs or to background
    * @param {Object} message - Message that will be sent
    * @returns {void}
    */
-
-  sendMessageToActiveTab(message) {
-    chrome.tabs.query({active: true}, function(tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, message, (response) => {
-        console.log('test_2 (active tab)');
-      });
-    });
-  }
-
   sendMessage(message) {
     if (chrome.tabs) { // background
       chrome.tabs.query({windowType: "normal"}, function (tabs) {

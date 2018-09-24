@@ -15,10 +15,7 @@ function callback(message, tab) {
   }
 }
 
-messenger.sendMessageToActiveTab({type: "function", content: {
-    function: "SomeFuncToClient" 
-  }
-});
+// messenger.sendMessageToTab(tab, message);
 
 messenger.onMessage(callback);
 
