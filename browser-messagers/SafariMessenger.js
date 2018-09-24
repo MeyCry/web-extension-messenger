@@ -51,18 +51,14 @@ export default class SafariMessenger {
     }
   }
 
-  // TODO: add sending by tab
-  /*
-  sendTabMessage: function (tab, message) {
-    if (tab.page && tab.page.dispatchMessage) {
-      tab.page.dispatchMessage("message", message);
-    } else {
-      setTimeout(function () {
-        if (tab.page && tab.page.dispatchMessage) {
-          tab.page.dispatchMessage("message", message);
-        }
-      }, 2000);
-    }
+  /**
+   * Find active tab and send message to it
+   * @param {object} tab
+   * @param {object} message 
+   * @returns {void}
+   */
+
+  sendMessageToTab(tab, message) {
+    tab.page.dispatchMessage("message", message);
   }
-  */
 }
