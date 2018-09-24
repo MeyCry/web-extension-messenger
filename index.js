@@ -20,7 +20,7 @@ if (chrome) {
 
 /**
  * type definition
- * @typedef {Object} Implementations
+ * @typedef {object} Implementations
  * @property {object} chrome - Chrome implementations
  * @property {object} safari - Safari implementations
  * @property {object} firefoxOrEdge - Firefox and Edge implementations
@@ -40,7 +40,7 @@ export default class Messenger extends Implementations {
   }
 
   /**
-   * Send message to active tab
+   * Send message to tab
    * @param {object} tab
    * @param {object}  message
    * @return {void}
@@ -49,6 +49,12 @@ export default class Messenger extends Implementations {
     super.sendMessageToTab(tab, message);
   }
 
+  /**
+   * Send message to tab and get promise with response
+   * @param {tab} tab
+   * @param {message} message
+   * @return {Promise<object>}
+   */
   sendMesssageToTabAndGetResponse(tab, message) {
       if (!message.messId) {
           message.messId = guid();
@@ -92,7 +98,7 @@ export default class Messenger extends Implementations {
   /**
    *
    * @param {object} message to send
-   * @return {Promise} with response
+   * @return {Promise<object>} with response
    */
   sendMessageAndGetResponse(message) {
     if (!message.messId) {
