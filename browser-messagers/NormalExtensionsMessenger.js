@@ -47,6 +47,6 @@ export default class NormalExtensionsMessenger {
    * @returns {void}
    */
   sendMessageToTab(tab, message) {
-    console.log('hi firefox');
+    chrome.tabs.sendMessage(tab.id, message);
   }
 }
