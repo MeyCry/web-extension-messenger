@@ -17,15 +17,7 @@ export default class ChromeMessenger {
       }
     });
   }
-
-  /**
-   * Find active tab and send message to it
-   * @param {object} message 
-   */
-  sendMessageToTab(tab, message) {
-    chrome.tabs.sendMessage(tab.id, message)
-  }
-
+  
   /**
    * Send to all tabs or to background
    * @param {Object} message - Message that will be sent
@@ -41,5 +33,15 @@ export default class ChromeMessenger {
     } else { // client
       chrome.runtime.sendMessage(message);
     }
+  }
+
+  /**
+   * Find active tab and send message to it
+   * @param {object} tab
+   * @param {object} message 
+   * @returns {void}
+   */
+  sendMessageToTab(tab, message) {
+    chrome.tabs.sendMessage(tab.id, message)
   }
 }

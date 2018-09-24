@@ -15,8 +15,6 @@ function callback(message, tab) {
   }
 }
 
-// messenger.sendMessageToTab(tab, message);
-
 messenger.onMessage(callback);
 
 setTimeout(function () {

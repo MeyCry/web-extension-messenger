@@ -41,7 +41,8 @@ export default class Messenger extends Implementations {
 
   /**
    * Send message to active tab
-   * @param {object}
+   * @param {object} tab
+   * @param {object}  message
    * @return {void}
    */
   sendMessageToTab(tab, message) {

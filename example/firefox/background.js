@@ -108,8 +108,6 @@ function callback(message, tab) {
   }
 }
 
-// messenger.sendMessageToTab(tab, message);
-
 messenger.onMessage(callback);
 
 setTimeout(function () {
@@ -176,7 +174,8 @@ class Messenger extends Implementations {
 
   /**
    * Send message to active tab
-   * @param {object}
+   * @param {object} tab
+   * @param {object}  message
    * @return {void}
    */
   sendMessageToTab(tab, message) {
@@ -282,15 +281,7 @@ class ChromeMessenger {
       }
     });
   }
-
-  /**
-   * Find active tab and send message to it
-   * @param {object} message 
-   */
-  sendMessageToTab(tab, message) {
-    chrome.tabs.sendMessage(tab.id, message)
-  }
-
+  
   /**
    * Send to all tabs or to background
    * @param {Object} message - Message that will be sent
@@ -306,6 +297,16 @@ class ChromeMessenger {
     } else { // client
       chrome.runtime.sendMessage(message);
     }
+  }
+
+  /**
+   * Find active tab and send message to it
+   * @param {object} tab
+   * @param {object} message 
+   * @returns {void}
+   */
+  sendMessageToTab(tab, message) {
+    chrome.tabs.sendMessage(tab.id, message)
   }
 }
 
@@ -356,6 +357,16 @@ class NormalExtensionsMessenger {
     } else { // client
       browser.runtime.sendMessage(message);
     }
+  }
+
+  /**
+   * Find active tab and send message to it
+   * @param {object} tab
+   * @param {object} message 
+   * @returns {void}
+   */
+  sendMessageToTab(tab, message) {
+    console.log('hi firefox');
   }
 }
 
@@ -419,20 +430,16 @@ class SafariMessenger {
     }
   }
 
-  // TODO: add sending by tab
-  /*
-  sendTabMessage: function (tab, message) {
-    if (tab.page && tab.page.dispatchMessage) {
-      tab.page.dispatchMessage("message", message);
-    } else {
-      setTimeout(function () {
-        if (tab.page && tab.page.dispatchMessage) {
-          tab.page.dispatchMessage("message", message);
-        }
-      }, 2000);
-    }
+  /**
+   * Find active tab and send message to it
+   * @param {object} tab
+   * @param {object} message 
+   * @returns {void}
+   */
+
+  sendMessageToTab(tab, message) {
+    tab.page.dispatchMessage("message", message);
   }
-  */
 }
 
 /***/ })
