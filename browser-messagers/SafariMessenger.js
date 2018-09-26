@@ -59,6 +59,8 @@ export default class SafariMessenger {
    */
 
   sendMessageToTab(tab, message) {
-    tab.page.dispatchMessage("message", message);
+    if (window.safari.application) { 
+      tab.page.dispatchMessage("message", message);
+    }
   }
 }

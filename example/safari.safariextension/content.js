@@ -290,7 +290,9 @@ class ChromeMessenger {
    * @returns {void}
    */
   sendMessageToTab(tab, message) {
-    chrome.tabs.sendMessage(tab.id, message);
+    if(chrome.tabs){
+      chrome.tabs.sendMessage(tab.id, message);
+    }
   }
 }
 
@@ -350,7 +352,9 @@ class NormalExtensionsMessenger {
    * @returns {void}
    */
   sendMessageToTab(tab, message) {
-    chrome.tabs.sendMessage(tab.id, message);
+    if(chrome.tabs){
+      chrome.tabs.sendMessage(tab.id, message);
+    }
   }
 }
 
@@ -422,7 +426,9 @@ class SafariMessenger {
    */
 
   sendMessageToTab(tab, message) {
-    tab.page.dispatchMessage("message", message);
+    if (window.safari.application) { 
+      tab.page.dispatchMessage("message", message);
+    }
   }
 }
 
