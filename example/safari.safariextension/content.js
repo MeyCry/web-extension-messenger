@@ -118,7 +118,7 @@ if (chrome) {
 
 /**
  * type definition
- * @typedef {Object} Implementations
+ * @typedef {object} Implementations
  * @property {object} chrome - Chrome implementations
  * @property {object} safari - Safari implementations
  * @property {object} firefoxOrEdge - Firefox and Edge implementations
@@ -138,7 +138,7 @@ class Messenger extends Implementations {
   }
 
   /**
-   * Send message to active tab
+   * Send message to tab
    * @param {object} tab
    * @param {object}  message
    * @return {void}
@@ -147,6 +147,25 @@ class Messenger extends Implementations {
     super.sendMessageToTab(tab, message);
   }
 
+  /**
+   * Send message to tab and get promise with response
+   * @param {tab} tab
+   * @param {message} message
+   * @return {Promise<object>}
+   */
+  sendMesssageToTabAndGetResponse(tab, message) {
+      if (!message.messId) {
+          message.messId = Object(_guid__WEBPACK_IMPORTED_MODULE_0__["default"])();
+      }
+
+      return new Promise((resolve, reject) => {
+          this.responses[message.messId] = function (response) {
+              resolve(response);
+          };
+
+          this.sendMessageToTab(tab, message);
+      });
+  }
 
   /**
    * Push callback in array of callbacks
@@ -177,7 +196,7 @@ class Messenger extends Implementations {
   /**
    *
    * @param {object} message to send
-   * @return {Promise} with response
+   * @return {Promise<object>} with response
    */
   sendMessageAndGetResponse(message) {
     if (!message.messId) {
@@ -246,7 +265,7 @@ class ChromeMessenger {
       }
     });
   }
-  
+
   /**
    * Send to all tabs or to background
    * @param {Object} message - Message that will be sent
@@ -271,7 +290,7 @@ class ChromeMessenger {
    * @returns {void}
    */
   sendMessageToTab(tab, message) {
-    chrome.tabs.sendMessage(tab.id, message)
+    chrome.tabs.sendMessage(tab.id, message);
   }
 }
 
@@ -331,7 +350,7 @@ class NormalExtensionsMessenger {
    * @returns {void}
    */
   sendMessageToTab(tab, message) {
-    console.log('hi firefox');
+    chrome.tabs.sendMessage(tab.id, message);
   }
 }
 
