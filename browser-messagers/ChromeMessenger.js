@@ -42,6 +42,8 @@ export default class ChromeMessenger {
    * @returns {void}
    */
   sendMessageToTab(tab, message) {
-    chrome.tabs.sendMessage(tab.id, message);
+    if(chrome.tabs){
+      chrome.tabs.sendMessage(tab.id, message);
+    }
   }
 }
