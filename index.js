@@ -114,8 +114,3 @@ export default class Messenger extends Implementations {
     });
   }
 }
-
-const exports = exports || false;
-if (exports) {
-  exports.Messager = Messenger;
-}
