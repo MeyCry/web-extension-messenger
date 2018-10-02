@@ -57,8 +57,15 @@ export default class SafariMessenger {
    * @param {object} message 
    * @returns {void}
    */
-
   sendMessageToTab(tab, message) {
-    tab.page.dispatchMessage("message", message);
+    if (tab && tab.page && tab.page.dispatchMessage) {
+      tab.page.dispatchMessage('message', message);
+    } else {
+      setTimeout(function () {
+        if (tab && tab.page && tab.page.dispatchMessage) {
+          tab.page.dispatchMessage('message', message);
+        }
+      }, 1000);
+    }
   }
 }
