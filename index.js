@@ -62,11 +62,13 @@ export default class Messenger extends Implementations {
       }
 
       return new Promise((resolve, reject) => {
+          var timer = null;
           this.responses[message.messId] = function (response) {
+              clearTimeout(timer);
               resolve(response);
           };
 
-          setTimeout(() => {
+          timer = setTimeout(() => {
               reject();
               delete this.responses[message.messId];
           }, timeToWaitResponse);
@@ -113,11 +115,13 @@ export default class Messenger extends Implementations {
     }
 
     return new Promise((resolve, reject) => {
+      var timer = null;
       this.responses[message.messId] = function (response) {
+        clearTimeout(timer);
         resolve(response);
       };
 
-      setTimeout(() => {
+      timer = setTimeout(() => {
         reject();
         delete this.responses[message.messId];
       }, timeToWaitResponse);
