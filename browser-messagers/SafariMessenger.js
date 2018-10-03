@@ -47,7 +47,15 @@ export default class SafariMessenger {
         });
       });
     } else { // client
-      window.safari.self.tab.dispatchMessage('message', message);
+      if (window.safari && window.safari.self && window.safari.self.tab && window.safari.self.tab.dispatchMessage) {
+          window.safari.self.tab.dispatchMessage('message', message);
+      } else {
+        setTimeout(function () {
+            if (window.safari && window.safari.self && window.safari.self.tab && window.safari.self.tab.dispatchMessage) {
+                window.safari.self.tab.dispatchMessage('message', message);
+            }
+        }, 1000);
+      }
     }
   }
 
