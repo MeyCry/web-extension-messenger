@@ -52,10 +52,11 @@ export default class Messenger extends Implementations {
   /**
    * Send message to tab and get promise with response
    * @param {tab} tab
-   * @param {message} message
+   * @param {object} message
+   * @param {number} timeToWaitResponse time in ms what we wait response
    * @return {Promise<object>}
    */
-  sendMesssageToTabAndGetResponse(tab, message) {
+  sendMesssageToTabAndGetResponse(tab, message, timeToWaitResponse = 500) {
       if (!message.messId) {
           message.messId = guid();
       }
@@ -64,6 +65,11 @@ export default class Messenger extends Implementations {
           this.responses[message.messId] = function (response) {
               resolve(response);
           };
+
+          setTimeout(() => {
+              reject();
+              delete this.responses[message.messId];
+          }, timeToWaitResponse);
 
           this.sendMessageToTab(tab, message);
       });
@@ -98,9 +104,10 @@ export default class Messenger extends Implementations {
   /**
    *
    * @param {object} message to send
+   * @param {number} timeToWaitResponse time in ms what we wait response
    * @return {Promise<object>} with response
    */
-  sendMessageAndGetResponse(message) {
+  sendMessageAndGetResponse(message, timeToWaitResponse = 500) {
     if (!message.messId) {
       message.messId = guid();
     }
@@ -109,6 +116,11 @@ export default class Messenger extends Implementations {
       this.responses[message.messId] = function (response) {
         resolve(response);
       };
+
+      setTimeout(() => {
+        reject();
+        delete this.responses[message.messId];
+      }, timeToWaitResponse);
 
       this.sendMessage(message);
     });
