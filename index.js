@@ -122,8 +122,8 @@ export default class Messenger extends Implementations {
       };
 
       timer = setTimeout(() => {
-        reject();
         delete this.responses[message.messId];
+        reject();
       }, timeToWaitResponse);
 
       this.sendMessage(message);
