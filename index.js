@@ -57,24 +57,24 @@ export default class Messenger extends Implementations {
    * @return {Promise<object>}
    */
   sendMesssageToTabAndGetResponse(tab, message, timeToWaitResponse = 500) {
-      if (!message.messId) {
-          message.messId = guid();
-      }
+    if (!message.messId) {
+      message.messId = guid();
+    }
 
-      return new Promise((resolve, reject) => {
-          var timer = null;
-          this.responses[message.messId] = function (response) {
-              clearTimeout(timer);
-              resolve(response);
-          };
+    return new Promise((resolve, reject) => {
+      var timer = null;
+      this.responses[message.messId] = function (response) {
+        clearTimeout(timer);
+        resolve(response);
+      };
 
-          timer = setTimeout(() => {
-              reject();
-              delete this.responses[message.messId];
-          }, timeToWaitResponse);
+      timer = setTimeout(() => {
+        delete this.responses[message.messId];
+        reject();
+      }, timeToWaitResponse);
 
-          this.sendMessageToTab(tab, message);
-      });
+      this.sendMessageToTab(tab, message);
+    });
   }
 
   /**
@@ -122,8 +122,8 @@ export default class Messenger extends Implementations {
       };
 
       timer = setTimeout(() => {
-        reject();
         delete this.responses[message.messId];
+        reject();
       }, timeToWaitResponse);
 
       this.sendMessage(message);
