@@ -5,7 +5,6 @@ import SafariMessenger from "./browser-messagers/SafariMessenger";
 
 var chrome = window.chrome || false;
 var safari = window.safari || false;
-var browser = window.browser || false;
 
 var browserType = "";
 if (chrome) {
