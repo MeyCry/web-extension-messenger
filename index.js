@@ -15,7 +15,7 @@ if (chrome) {
 } else if (browser) {
   browserType = "firefoxOrEdge"
 } else {
-  throw new Error("web-extension-messenger not support your type of extension");
+  console.error("web-extension-messenger not support your type of extension");
 }
 
 /**
