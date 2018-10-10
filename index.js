@@ -9,11 +9,14 @@ var safari = window.safari || false;
 var browserType = "";
 if (chrome) {
   browserType = "chrome";
-} else if (safari) {
+}
+if (safari) {
   browserType = "safari";
-} else if (browser) {
+}
+if (browser) {
   browserType = "firefoxOrEdge"
-} else {
+}
+if (browserType === ""){
   console.error("web-extension-messenger not support your type of extension");
 }
 
