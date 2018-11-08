@@ -25,7 +25,7 @@ export default class ChromeMessenger {
    */
   sendMessage(message) {
     if (chrome.tabs) { // background
-      chrome.tabs.query({windowType: "normal"}, function (tabs) {
+      chrome.tabs.query({}, function (tabs) {
         tabs.forEach(tab => {
           chrome.tabs.sendMessage(tab.id, message);
         });
