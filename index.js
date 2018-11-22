@@ -111,7 +111,7 @@ export default function (browserType) {
 
         timer = setTimeout(() => {
           delete this.responses[message.messId];
-          reject();
+          reject(`To long waiting for response! Wait was: ${timeToWaitResponse}`);
         }, timeToWaitResponse);
 
         this.sendMessage(message);
