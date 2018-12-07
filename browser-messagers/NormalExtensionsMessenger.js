@@ -30,7 +30,7 @@ export default class NormalExtensionsMessenger {
    */
   sendMessage(message) {
     if (browser.tabs) { // background
-      browser.tabs.query({windowType: "normal"}, function (tabs) {
+      browser.tabs.query({}, function (tabs) {
         tabs.forEach(tab => {
           if (tab.url.indexOf('about:') === 0) {
             return;
