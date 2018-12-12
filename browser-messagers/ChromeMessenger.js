@@ -19,20 +19,27 @@ export default class ChromeMessenger {
   }
 
   /**
-   * Send to all tabs or to background
+   * Send to all tabs
    * @param {Object} message - Message that will be sent
    * @returns {void}
    */
-  sendMessage(message) {
-    if (chrome.tabs) { // background
+  sendMessageToContent(message) {
+    if (chrome.tabs) { // background or popup
       chrome.tabs.query({}, function (tabs) {
         tabs.forEach(tab => {
           chrome.tabs.sendMessage(tab.id, message);
         });
       });
-    } else { // client
-      chrome.runtime.sendMessage(message);
     }
+  }
+
+  /**
+   * Send to popup or to background
+   * @param {Object} message - Message that will be sent
+   * @returns {void}
+   */
+  sendMessageGlobal(message) { // content
+    chrome.runtime.sendMessage(message);
   }
 
   /**

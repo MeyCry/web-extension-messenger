@@ -84,11 +84,19 @@ export default function (browserType) {
     }
 
     /**
-     * send message to other messengers
+     * send message to content
      * @param {object} message
      */
-    sendMessage(message) {
-      super.sendMessage(message);
+    sendMessageToContent(message) {
+      super.sendMessageToContent(message);
+    }
+
+    /**
+     * send message to popup or background
+     * @param {object} message
+     */
+    sendMessageGlobal(message) {
+      super.sendMessageGlobal(message);
     }
 
     /**
@@ -97,7 +105,7 @@ export default function (browserType) {
      * @param {number} timeToWaitResponse time in ms what we wait response
      * @return {Promise<object>} with response
      */
-    sendMessageAndGetResponse(message, timeToWaitResponse = 500) {
+    sendMessageAndGetResponse(method, message, timeToWaitResponse = 500) {
       if (!message.messId) {
         message.messId = guid();
       }
@@ -114,8 +122,16 @@ export default function (browserType) {
           reject(`To long waiting for response! Wait was: ${timeToWaitResponse}`);
         }, timeToWaitResponse);
 
-        this.sendMessage(message);
+        method(message);
       });
+    }
+
+    sendMessageGlobalAndGetResponse(message, timeToWaitResponse) {
+      this.sendMessageAndGetResponse(this.sendMessageGlobal, message, timeToWaitResponse);
+    }
+
+    sendMessageToContentAndGetResponse(message, timeToWaitResponse) {
+      this.sendMessageAndGetResponse(this.sendMessageToContent, message, timeToWaitResponse);
     }
   }
 }

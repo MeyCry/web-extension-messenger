@@ -24,12 +24,12 @@ export default class NormalExtensionsMessenger {
   }
 
   /**
-   * Send to all tabs or to background
+   * Send to all tabs
    * @param {Object} message - Message that will be sent
    * @returns {void}
    */
-  sendMessage(message) {
-    if (browser.tabs) { // background
+  sendMessageToContent(message) {
+    if (browser.tabs) { // background or popup
       browser.tabs.query({}, function (tabs) {
         tabs.forEach(tab => {
           if (!tab.url || !/^(http|ws)/.test(tab.url)) {
@@ -38,9 +38,16 @@ export default class NormalExtensionsMessenger {
           browser.tabs.sendMessage(tab.id, message);
         });
       });
-    } else { // client
-      browser.runtime.sendMessage(message);
     }
+  }
+
+  /**
+   * Send to popup or to background
+   * @param {Object} message - Message that will be sent
+   * @returns {void}
+   */
+  sendMessageGlobal(message) { // content
+    browser.runtime.sendMessage(message);
   }
 
   /**

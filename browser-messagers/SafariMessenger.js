@@ -37,7 +37,7 @@ export default class SafariMessenger {
    * @param {object} message - Message that will be sent to the all tabs.
    * @returns {void}
    */
-  sendMessage(message) {
+  sendMessageToContent(message) {
     if (window.safari.application) { // background
       window.safari.application.browserWindows.forEach(browserWindow => {
         browserWindow.tabs.forEach(tab => {
@@ -46,16 +46,22 @@ export default class SafariMessenger {
           }
         });
       });
-    } else { // client
-      if (window.safari && window.safari.self && window.safari.self.tab && window.safari.self.tab.dispatchMessage) {
+    }
+  }
+
+  /**
+   * @param {object} message - Message that will be sent to popup or background.
+   * @returns {void}
+   */
+  sendMessageGlobal(message) {
+    if (window.safari && window.safari.self && window.safari.self.tab && window.safari.self.tab.dispatchMessage) {
+      window.safari.self.tab.dispatchMessage('message', message);
+    } else {
+      setTimeout(function () {
+        if (window.safari && window.safari.self && window.safari.self.tab && window.safari.self.tab.dispatchMessage) {
           window.safari.self.tab.dispatchMessage('message', message);
-      } else {
-        setTimeout(function () {
-            if (window.safari && window.safari.self && window.safari.self.tab && window.safari.self.tab.dispatchMessage) {
-                window.safari.self.tab.dispatchMessage('message', message);
-            }
-        }, 1000);
-      }
+        }
+      }, 1000);
     }
   }
 

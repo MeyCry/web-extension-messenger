@@ -20,14 +20,14 @@ setTimeout(function () {
 
   messenger.onMessage(callback);
 
-  messenger.sendMessageAndGetResponse({
+  messenger.sendMessageGlobalAndGetResponse({
     text: "hello"
   }).then(function (message) {
     console.log("response from background", message);
   });
 
   setTimeout(function () {
-    messenger.sendMessage({
+    messenger.sendMessageGlobal({
       superId: 42,
       megaDescription: "word"
     });
@@ -38,7 +38,7 @@ setTimeout(function () {
 
 ```
 
-background.js
+background.js (same as for extension popup)
 
 ```$xslt
 
@@ -50,17 +50,21 @@ function callback(message) {
   console.log("message from some tab", message);
 
   if (message.messageId) { // send response
-    messenger.sendMessage({
+    messenger.sendMessageToContent({
       messageId: message.messageId,
       yourMessage: message
     });
   }
 }
 
+messenger.sendMessageGlobal({ // message to popup
+  yourMessage: 'Hello!'
+});
+
 messenger.onMessage(callback);
 
 setTimeout(function () {
-  messenger.sendMessageAndGetResponse({
+  messenger.sendMessageToContentAndGetResponse({
     text: "hello tab!!!"
   }).then(function (message) {
     console.log("response from tabs", message);
