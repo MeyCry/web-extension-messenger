@@ -84,7 +84,7 @@ export default function (browserType) {
     }
 
     /**
-     * send message to other messengers
+     * send message to other messengers (content to global; global to content)
      * @param {object} message
      */
     sendMessage(message) {
@@ -92,12 +92,14 @@ export default function (browserType) {
     }
 
     /**
-     *
-     * @param {object} message to send
-     * @param {number} timeToWaitResponse time in ms what we wait response
-     * @return {Promise<object>} with response
+     * send message to other messengers (content to global; global to global)
+     * @param {object} message
      */
-    sendMessageAndGetResponse(message, timeToWaitResponse = 500) {
+    sendMessageGlobal(message) {
+      super.sendMessageGlobal(message);
+    }
+
+    sendMessageAndGetResponseRealization(method, message, timeToWaitResponse = 500) {
       if (!message.messId) {
         message.messId = guid();
       }
@@ -114,8 +116,28 @@ export default function (browserType) {
           reject(`To long waiting for response! Wait was: ${timeToWaitResponse}`);
         }, timeToWaitResponse);
 
-        this.sendMessage(message);
+        method(message);
       });
+    }
+
+    /**
+     *
+     * @param {object} message to send
+     * @param {number} timeToWaitResponse time in ms what we wait response
+     * @return {Promise<object>} with response
+     */
+    sendMessageAndGetResponse(message, timeToWaitResponse) {
+      this.sendMessageAndGetResponseRealization(this.sendMessage, message, timeToWaitResponse);
+    }
+
+    /**
+     *
+     * @param {object} message to send (to Global - popup or bg)
+     * @param {number} timeToWaitResponse time in ms what we wait response
+     * @return {Promise<object>} with response
+     */
+    sendMessageAndGetResponseGlobal(message, timeToWaitResponse = 500) {
+      this.sendMessageAndGetResponseRealization(this.sendMessageGlobal, message, timeToWaitResponse);
     }
   }
 }

@@ -34,7 +34,7 @@ export default class SafariMessenger {
   }
 
   /**
-   * @param {object} message - Message that will be sent to the all tabs.
+   * @param {object} message - Message that will be sent to the all tabs from global, or from content to global.
    * @returns {void}
    */
   sendMessage(message) {
@@ -56,6 +56,22 @@ export default class SafariMessenger {
             }
         }, 1000);
       }
+    }
+  }
+
+  /**
+   * @param {object} message - Message that will be sent to popup or bg.
+   * @returns {void}
+   */
+  sendMessageGlobal(message) {
+    if (window.safari && window.safari.self && window.safari.self.tab && window.safari.self.tab.dispatchMessage) {
+      window.safari.self.tab.dispatchMessage('message', message);
+    } else {
+      setTimeout(function () {
+        if (window.safari && window.safari.self && window.safari.self.tab && window.safari.self.tab.dispatchMessage) {
+          window.safari.self.tab.dispatchMessage('message', message);
+        }
+      }, 1000);
     }
   }
 

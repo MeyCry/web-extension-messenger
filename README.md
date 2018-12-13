@@ -25,11 +25,22 @@ setTimeout(function () {
   }).then(function (message) {
     console.log("response from background", message);
   });
+  
+  messenger.sendMessageAndGetResponseGlobal({
+    text: "hello Global!"
+  }).then(function (message) {
+    console.log("response from background", message);
+  });
 
   setTimeout(function () {
     messenger.sendMessage({
       superId: 42,
       megaDescription: "word"
+    });
+    
+    messenger.sendMessageGlobal({
+      superId: 43,
+      megaDescription: "global word"
     });
 
     messenger.offMessage(callback);
@@ -58,6 +69,11 @@ function callback(message) {
 }
 
 messenger.onMessage(callback);
+
+messenger.sendMessageGlobal({
+  messageId: message.messageId,
+  yourMessage: 'Hello Global'
+});
 
 setTimeout(function () {
   messenger.sendMessageAndGetResponse({
