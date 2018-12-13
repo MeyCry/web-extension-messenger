@@ -99,7 +99,7 @@ export default function (browserType) {
       super.sendMessageGlobal(message);
     }
 
-    sendMessageAndGetResponseRealization(method, message, timeToWaitResponse = 500) {
+    registerCallback(message, timeToWaitResponse = 500) {
       if (!message.messId) {
         message.messId = guid();
       }
@@ -116,7 +116,6 @@ export default function (browserType) {
           reject(`To long waiting for response! Wait was: ${timeToWaitResponse}`);
         }, timeToWaitResponse);
 
-        method(message);
       });
     }
 
@@ -127,7 +126,9 @@ export default function (browserType) {
      * @return {Promise<object>} with response
      */
     sendMessageAndGetResponse(message, timeToWaitResponse) {
-      return this.sendMessageAndGetResponseRealization(this.sendMessage, message, timeToWaitResponse);
+      const res = this.registerCallback(message, timeToWaitResponse);
+      this.sendMessage(message);
+      return res;
     }
 
     /**
@@ -137,7 +138,9 @@ export default function (browserType) {
      * @return {Promise<object>} with response
      */
     sendMessageAndGetResponseGlobal(message, timeToWaitResponse = 500) {
-      return this.sendMessageAndGetResponseRealization(this.sendMessageGlobal, message, timeToWaitResponse);
+      const res = this.registerCallback(message, timeToWaitResponse);
+      this.sendMessageGlobal(message);
+      return res;
     }
   }
 }
