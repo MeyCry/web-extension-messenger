@@ -19,7 +19,7 @@ export default class ChromeMessenger {
   }
 
   /**
-   * Send to all tabs or to background
+   * Send to all tabs from background or popup, or to background or popup from content
    * @param {Object} message - Message that will be sent
    * @returns {void}
    */
@@ -33,6 +33,15 @@ export default class ChromeMessenger {
     } else { // client
       chrome.runtime.sendMessage(message);
     }
+  }
+
+  /**
+   * Send to popup or to background
+   * @param {Object} message - Message that will be sent
+   * @returns {void}
+   */
+  sendMessageGlobal(message) {
+    chrome.runtime.sendMessage(message);
   }
 
   /**
