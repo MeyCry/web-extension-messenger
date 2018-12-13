@@ -127,7 +127,7 @@ export default function (browserType) {
      * @return {Promise<object>} with response
      */
     sendMessageAndGetResponse(message, timeToWaitResponse) {
-      this.sendMessageAndGetResponseRealization(this.sendMessage, message, timeToWaitResponse);
+      return this.sendMessageAndGetResponseRealization(this.sendMessage, message, timeToWaitResponse);
     }
 
     /**
@@ -137,7 +137,7 @@ export default function (browserType) {
      * @return {Promise<object>} with response
      */
     sendMessageAndGetResponseGlobal(message, timeToWaitResponse = 500) {
-      this.sendMessageAndGetResponseRealization(this.sendMessageGlobal, message, timeToWaitResponse);
+      return this.sendMessageAndGetResponseRealization(this.sendMessageGlobal, message, timeToWaitResponse);
     }
   }
 }
