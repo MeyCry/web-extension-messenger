@@ -59,6 +59,6 @@ export default class NormalExtensionsMessenger {
    * @returns {void}
    */
   sendMessageToTab(tab, message) {
-    chrome.tabs.sendMessage(tab.id, message);
+    browser.tabs.sendMessage(tab.id, message);
   }
 }
