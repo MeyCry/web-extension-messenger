@@ -5,6 +5,9 @@
  */
 export default class NormalExtensionsMessenger {
   constructor() {
+    // I don't know why, but in some cases edge lost context.
+    this.browser = browser;
+
     browser.runtime.onMessage.addListener((message, sender) => {
       const messId = message.messId;
 
@@ -39,7 +42,7 @@ export default class NormalExtensionsMessenger {
         });
       });
     } else { // client
-      browser.runtime.sendMessage(message);
+      this.browser.runtime.sendMessage(message);
     }
   }
 
@@ -49,7 +52,7 @@ export default class NormalExtensionsMessenger {
    * @returns {void}
    */
   sendMessageGlobal(message) {
-    browser.runtime.sendMessage(message);
+    this.browser.runtime.sendMessage(message);
   }
 
   /**

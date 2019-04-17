@@ -1,6 +1,6 @@
 {
   "name": "web-extension-messenger",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "description": "A small wrapper of the Browser API for organizing communication between background and content js scripts",
   "main": "index.js",
   "scripts": {
