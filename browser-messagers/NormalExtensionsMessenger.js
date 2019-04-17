@@ -5,7 +5,10 @@
  */
 export default class NormalExtensionsMessenger {
   constructor() {
-    browser.runtime.onMessage.addListener((message, sender) => {
+    // I don't know why, but in some cases edge lost context.
+    this.browser = browser;
+
+    this.browser.runtime.onMessage.addListener((message, sender) => {
       const messId = message.messId;
 
       this.callbacks.forEach(callback => {
@@ -29,17 +32,17 @@ export default class NormalExtensionsMessenger {
    * @returns {void}
    */
   sendMessage(message) {
-    if (browser.tabs) { // background
-      browser.tabs.query({}, function (tabs) {
+    if (this.browser.tabs) { // background
+      this.browser.tabs.query({}, function (tabs) {
         tabs.forEach(tab => {
           if (!tab.url || !/^(http|ws)/.test(tab.url)) {
             return;
           }
-          browser.tabs.sendMessage(tab.id, message);
+          this.browser.tabs.sendMessage(tab.id, message);
         });
       });
     } else { // client
-      browser.runtime.sendMessage(message);
+      this.browser.runtime.sendMessage(message);
     }
   }
 
@@ -49,7 +52,7 @@ export default class NormalExtensionsMessenger {
    * @returns {void}
    */
   sendMessageGlobal(message) {
-    browser.runtime.sendMessage(message);
+    this.browser.runtime.sendMessage(message);
   }
 
   /**
@@ -59,6 +62,6 @@ export default class NormalExtensionsMessenger {
    * @returns {void}
    */
   sendMessageToTab(tab, message) {
-    browser.tabs.sendMessage(tab.id, message);
+    this.browser.tabs.sendMessage(tab.id, message);
   }
 }
