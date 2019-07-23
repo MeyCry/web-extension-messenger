@@ -1,7 +1,8 @@
 const webpack = require("webpack");
 const path = require("path");
 
-const config = {
+const outputDir = path.join(__dirname, "build-output");
+const baseConfig = {
   entry: {
     background: "./background.js",
     content: "./content.js"
@@ -9,21 +10,19 @@ const config = {
   mode: "none",
   output: {
     filename: '[name].js',
-    // path: path.resolve(__dirname, "chrome")
   }
 };
 
-
-const configPathes = [
-  path.resolve(__dirname, "chrome"),
-  path.resolve(__dirname, "firefox"),
-  path.resolve(__dirname, "safari.safariextension"),
+const outputPaths = [
+  path.join(outputDir, "chrome"),
+  path.join(outputDir, "firefox"),
+  // path.join(outputDir, "safari.safariextension"),
 ];
 
-configPathes.forEach(function (itemPath) {
-  const conf = Object.assign({}, config);
+outputPaths.forEach(outputPath => {
+  const conf = Object.assign({}, baseConfig);
   conf.output = Object.assign({}, conf.output, {
-    path: itemPath
+    path: outputPath,
   });
 
   var lastHash = null;

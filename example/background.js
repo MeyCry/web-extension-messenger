@@ -1,18 +1,14 @@
-import Messenger from "../index";
+import Messenger from "..";
 
 console.log("run background");
-
 const messenger = new Messenger();
 
 function callback(message, tab) {
   console.log("message from some tab", message, tab);
 
-  if (message.messId) { // send response
-    messenger.sendMessage({
-      messId: message.messId,
-      yourMessage: message
-    });
-  }
+  return {
+    yourMessage: message
+  };
 }
 
 messenger.onMessage(callback);
