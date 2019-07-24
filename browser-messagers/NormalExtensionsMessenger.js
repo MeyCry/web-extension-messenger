@@ -11,6 +11,18 @@ export default class NormalExtensionsMessenger {
     browser.runtime.onMessage.addListener((message, sender) => {
       const messId = message.messId;
 
+      if (messId) {
+        // Attach callback id and invoke function
+        if (this.responses[messId]) {
+            this.responses[messId](message);
+            delete this.responses[messId];
+            return;
+        }
+        if (message.response) {
+          return;
+        }
+      }
+
       this.callbacks.forEach(callback => {
         if (browser.tabs) { // background
           callback(message, sender.tab);
@@ -18,11 +30,6 @@ export default class NormalExtensionsMessenger {
           callback(message);
         }
       });
-      // Attach callback id and invoke function
-      if (messId && this.responses[messId]) {
-          this.responses[messId](message);
-          delete this.responses[messId];
-      }
     });
   }
 
