@@ -34,35 +34,10 @@ export default function (browserType) {
      * @return {void}
      */
     sendMessageToTab(tab, message) {
-      super.sendMessageToTab(tab, message);
-    }
-
-    /**
-     * Send message to tab and get promise with response
-     * @param {tab} tab
-     * @param {object} message
-     * @param {number} timeToWaitResponse time in ms what we wait response
-     * @return {Promise<object>}
-     */
-    sendMesssageToTabAndGetResponse(tab, message, timeToWaitResponse = 500) {
-      if (!message.messId) {
-        message.messId = guid();
+      if (message.messId) {
+        message.response = true;
       }
-
-      return new Promise((resolve, reject) => {
-        var timer = null;
-        this.responses[message.messId] = function (response) {
-          clearTimeout(timer);
-          resolve(response);
-        };
-
-        timer = setTimeout(() => {
-          delete this.responses[message.messId];
-          reject();
-        }, timeToWaitResponse);
-
-        this.sendMessageToTab(tab, message);
-      });
+      super.sendMessageToTab(tab, message);
     }
 
     /**
@@ -88,6 +63,9 @@ export default function (browserType) {
      * @param {object} message
      */
     sendMessage(message) {
+      if (message.messId) {
+        message.response = true;
+      }
       super.sendMessage(message);
     }
 
@@ -96,12 +74,17 @@ export default function (browserType) {
      * @param {object} message
      */
     sendMessageGlobal(message) {
+      if (message.messId) {
+        message.response = true;
+      }
       super.sendMessageGlobal(message);
     }
 
     registerCallback(message, timeToWaitResponse = 500) {
       if (!message.messId) {
         message.messId = guid();
+      } else {
+        message.response = true;
       }
 
       return new Promise((resolve, reject) => {
@@ -120,6 +103,19 @@ export default function (browserType) {
     }
 
     /**
+     * Send message to tab and get promise with response
+     * @param {tab} tab
+     * @param {object} message
+     * @param {number} timeToWaitResponse time in ms what we wait response
+     * @return {Promise<object>}
+     */
+    sendMesssageToTabAndGetResponse(tab, message, timeToWaitResponse = 500) {
+      const res = this.registerCallback(message, timeToWaitResponse);
+      super.sendMessageToTab(tab, message);
+      return res;
+    }
+
+    /**
      *
      * @param {object} message to send
      * @param {number} timeToWaitResponse time in ms what we wait response
@@ -127,7 +123,7 @@ export default function (browserType) {
      */
     sendMessageAndGetResponse(message, timeToWaitResponse) {
       const res = this.registerCallback(message, timeToWaitResponse);
-      this.sendMessage(message);
+      super.sendMessage(message);
       return res;
     }
 
@@ -139,7 +135,7 @@ export default function (browserType) {
      */
     sendMessageAndGetResponseGlobal(message, timeToWaitResponse = 500) {
       const res = this.registerCallback(message, timeToWaitResponse);
-      this.sendMessageGlobal(message);
+      super.sendMessageGlobal(message);
       return res;
     }
   }
