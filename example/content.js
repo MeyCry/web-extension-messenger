@@ -1,12 +1,15 @@
-import Messenger from "../index";
+import Messenger from "..";
 
 console.log("run content");
+const messenger = new Messenger();
 
 setTimeout(function () {
-  const messenger = new Messenger();
-
   function callback(message) {
     console.log("message from background", message);
+
+    return {
+      title: document.title,
+    };
   }
 
   messenger.onMessage(callback);
@@ -26,3 +29,5 @@ setTimeout(function () {
     messenger.offMessage(callback);
   }, 2000);
 }, 2000);
+
+window.messenger = messenger; // for test with dev console

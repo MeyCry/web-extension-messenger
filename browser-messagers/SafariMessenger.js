@@ -1,3 +1,4 @@
+// This file is unused and obsolete
 export default class SafariMessenger {
   constructor() {
     var ctx = {};
