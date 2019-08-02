@@ -69,6 +69,10 @@ export default class NormalExtensionsMessenger {
    * @returns {void}
    */
   sendMessageToTab(tab, message) {
-    browser.tabs.sendMessage(tab.id, message);
+    if (tab) {
+      browser.tabs.sendMessage(tab.id, message);
+    } else {
+      console.error('tab does not exist');
+    }
   }
 }
