@@ -58,6 +58,10 @@ export default class ChromeMessenger {
    * @returns {void}
    */
   sendMessageToTab(tab, message) {
-    chrome.tabs.sendMessage(tab.id, message);
+    if (tab) {
+      chrome.tabs.sendMessage(tab.id, message);
+    } else {
+      console.error('tab does not exist');
+    }
   }
 }
