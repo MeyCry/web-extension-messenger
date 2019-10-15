@@ -34,6 +34,10 @@ export default function (browserType) {
      * @return {void}
      */
     sendMessageToTab(tab, message) {
+      if (!tab || !tab.id) {
+        console.error('No tab to send message: ' + message.type);
+        return;
+      }
       if (message.messId) {
         message.response = true;
       }
@@ -110,6 +114,9 @@ export default function (browserType) {
      * @return {Promise<object>}
      */
     sendMesssageToTabAndGetResponse(tab, message, timeToWaitResponse = 500) {
+      if (!tab || !tab.id) {
+        return Promise.reject('No tab to send message: ' + message.type);
+      }
       const res = this.registerCallback(message, timeToWaitResponse);
       super.sendMessageToTab(tab, message);
       return res;
