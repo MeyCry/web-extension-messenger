@@ -113,7 +113,7 @@ export default function (browserType) {
      * @param {number} timeToWaitResponse time in ms what we wait response
      * @return {Promise<object>}
      */
-    sendMesssageToTabAndGetResponse(tab, message, timeToWaitResponse = 500) {
+    sendMessageToTabAndGetResponse(tab, message, timeToWaitResponse = 500) {
       if (!tab || !tab.id) {
         return Promise.reject('No tab to send message: ' + message.type);
       }
