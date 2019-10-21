@@ -188,7 +188,7 @@ class Messenger extends Implementations {
    * @param {message} message
    * @return {Promise<object>}
    */
-  sendMesssageToTabAndGetResponse(tab, message) {
+  sendMessageToTabAndGetResponse(tab, message) {
       if (!message.messId) {
           message.messId = Object(_guid__WEBPACK_IMPORTED_MODULE_0__["default"])();
       }
