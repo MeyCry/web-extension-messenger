@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/MeyCry/web-extension-messenger#readme",
   "devDependencies": {
-    "@types/chrome": "0.0.81",
+    "@types/chrome": "0.0.118",
     "@types/firefox-webext-browser": "^65.0.2"
   }
 }
