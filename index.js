@@ -35,7 +35,7 @@ export default function (browserType) {
      */
     sendMessageToTab(tab, message) {
       if (!tab || !tab.id) {
-        console.error('No tab to send message: ' + message.type);
+        console.error(`No tab to send message: ${JSON.stringify(message)}`);
         return;
       }
       if (message.messId) {
@@ -100,7 +100,7 @@ export default function (browserType) {
 
         timer = setTimeout(() => {
           delete this.responses[message.messId];
-          reject(`Did not received response for message: ${message.type}. Wait was: ${timeToWaitResponse}`);
+          reject(`Did not received response for message: ${JSON.stringify(message)}\nWait was: ${timeToWaitResponse}`);
         }, timeToWaitResponse);
 
       });
@@ -115,7 +115,7 @@ export default function (browserType) {
      */
     sendMessageToTabAndGetResponse(tab, message, timeToWaitResponse = 500) {
       if (!tab || !tab.id) {
-        return Promise.reject('No tab to send message: ' + message.type);
+        return Promise.reject(`No tab to send message: ${JSON.stringify(message)}`);
       }
       const res = this.registerCallback(message, timeToWaitResponse);
       super.sendMessageToTab(tab, message);
