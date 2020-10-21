@@ -45,11 +45,13 @@ export default class NormalExtensionsMessenger {
           if (!tab.url || !/^(http|ws)/.test(tab.url)) {
             return;
           }
-          browser.tabs.sendMessage(tab.id, message);
+          browser.tabs.sendMessage(tab.id, message)
+            .catch((e) => console.warn(e));;
         });
       });
     } else { // client
-      this.browser.runtime.sendMessage(message);
+      this.browser.runtime.sendMessage(message)
+        .catch((e) => console.warn(e));;
     }
   }
 
@@ -59,18 +61,20 @@ export default class NormalExtensionsMessenger {
    * @returns {void}
    */
   sendMessageGlobal(message) {
-    this.browser.runtime.sendMessage(message);
+    this.browser.runtime.sendMessage(message)
+      .catch((e) => console.warn(e));
   }
 
   /**
    * Find active tab and send message to it
    * @param {object} tab
-   * @param {object} message 
+   * @param {object} message
    * @returns {void}
    */
   sendMessageToTab(tab, message) {
     if (tab) {
-      browser.tabs.sendMessage(tab.id, message);
+      browser.tabs.sendMessage(tab.id, message)
+        .catch((e) => console.warn(e));;
     } else {
       console.error('tab does not exist');
     }
