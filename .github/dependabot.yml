@@ -1,0 +1,16 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "03:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: "@types/chrome"
+    versions:
+    - 0.0.129
+    - 0.0.130
+    - 0.0.132
+    - 0.0.133
+    - 0.0.134
